@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Хватит ли денег на ваш проект?</title>
+<style>
+:root{--ink:#101114;--muted:#70737a;--line:#e2e3e6;--soft:#f5f6f7;--card:#fff;--green:#18794e;--red:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:#f8f8f7;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+main{max-width:760px;margin:auto;padding:18px 14px 34px}
+.hero{padding:10px 4px 20px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#666;margin-bottom:10px}
+.dot{width:7px;height:7px;border-radius:50%;background:#111}
+h1{font-size:31px;line-height:1.05;letter-spacing:-.035em;margin:0 0 9px;font-weight:900}
+.lead{font-size:15px;line-height:1.5;color:var(--muted);max-width:640px;margin:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 8px 30px rgba(16,17,20,.05)}
+.start{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.field{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+.label{font-size:13px;font-weight:800;margin-bottom:8px}
+.input{display:flex;border:1px solid #cfd1d5;border-radius:11px;overflow:hidden;background:#fafafa}
+input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:11px 12px;font-size:17px;font-weight:750}
+.unit{display:flex;align-items:center;padding:0 11px;border-left:1px solid var(--line);font-size:12px;color:var(--muted);font-weight:700;background:#f2f3f4}
+.section-head{margin:4px 2px 13px}
+.section-title{font-size:17px;font-weight:900;margin-bottom:5px}
+.section-note{font-size:13px;color:var(--muted);line-height:1.4}
+.legend{display:grid;grid-template-columns:92px 1fr 1fr;gap:9px;align-items:center;padding:0 0 7px}
+.legend div{font-size:12px;font-weight:850;color:#555}
+.legend .out{color:#9c2a21}.legend .in{color:#18794e}
+.month{display:grid;grid-template-columns:92px 1fr 1fr;gap:9px;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
+.month:last-child{border-bottom:0}
+.month-name{font-size:13px;font-weight:800}
+.mini-label{display:none}
+.cell{position:relative}
+.icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;z-index:1}
+.cell input{padding-left:31px}
+button{width:100%;min-height:52px;margin-top:16px;border:0;border-radius:14px;background:#17191d;color:#fff;font-size:16px;font-weight:850;cursor:pointer}
+button:active{transform:translateY(1px)}
+.error{min-height:18px;color:var(--red);font-size:12px;margin-top:8px}
+.results{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{border-radius:20px;padding:17px 18px;border:1px solid var(--line);background:#fff}
+.metric.primary{grid-column:1/-1;background:#111;color:#fff;border-color:#111}
+.metric-label{font-size:12px;opacity:.68;margin-bottom:5px}
+.metric-value{font-size:29px;line-height:1.1;font-weight:900;letter-spacing:-.02em}
+.metric-text{font-size:13px;line-height:1.45;margin-top:8px;color:var(--muted)}
+.primary .metric-text{color:#c9c9c9}
+.status{margin-top:12px;padding:15px 17px;border-radius:17px;background:#f3f3f1;border:1px solid var(--line);font-size:14px;line-height:1.5}
+.chart{margin-top:14px;border:1px solid var(--line);border-radius:20px;background:#fff;padding:16px}
+.chart-title{font-size:14px;font-weight:850;margin-bottom:10px}
+.chart-wrap{height:190px;position:relative}
+svg{width:100%;height:100%;overflow:visible}.zero{stroke:#8d9096;stroke-width:1.2;stroke-dasharray:4 4}.line{fill:none;stroke:#17191d;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.dotp{fill:#fff;stroke:#17191d;stroke-width:2}.chart-label{font-size:10px;fill:#74777d}
+@media(max-width:620px){h1{font-size:27px}.start,.results{grid-template-columns:1fr}.metric.primary{grid-column:auto}.panel{padding:14px}.legend,.month{grid-template-columns:64px 1fr 1fr;gap:7px}}
+@media(max-width:430px){.legend,.month{grid-template-columns:1fr 1fr}.legend div:first-child,.month-name{grid-column:1/-1}.month-name{margin-bottom:-2px}.mini-label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px;font-weight:700}}
+</style>
+</head>
+<body>
+<main id="app">
+<section class="hero">
+<div class="eyebrow"><span class="dot"></span> Финансы без тумана</div>
+<h1>Хватит ли денег на ваш проект?</h1>
+<p class="lead">Проект может быть прибыльным — и всё равно в какой-то момент попросить у компании несколько миллионов.</p>
+</section>
+
+<section class="panel">
+<div class="start">
+<div class="field"><div class="label">💰 Свои деньги на старте</div><div class="input"><input id="start" inputmode="decimal" value="10" aria-label="Свои деньги на старте"><div class="unit">млн ₽</div></div></div>
+<div class="field"><div class="label">🗓️ Горизонт проекта</div><div class="input"><input id="months" inputmode="numeric" value="6" aria-label="Горизонт проекта в месяцах"><div class="unit">месяцев</div></div></div>
+</div>
+
+<div class="section-head">
+<div class="section-title">💸 Что будет происходить с деньгами проекта?</div>
+<div class="section-note">В каждом месяце укажите, сколько заплатите и сколько получите от заказчика.</div>
+</div>
+
+<div class="legend">
+<div></div><div class="out">📤 Заплатим</div><div class="in">📥 Получим</div>
+</div>
+<div id="rows"></div>
+<div id="error" class="error" aria-live="polite"></div>
+<button id="calc" type="button">Проверить проект →</button>
+</section>
+
+<section class="results" aria-live="polite">
+<div class="metric primary">
+<div class="metric-label">Максимальная потребность в деньгах</div>
+<div class="metric-value" id="gap">—</div>
+<div class="metric-text" id="gapText">Посчитайте проект — и увидите, понадобится ли дополнительное финансирование.</div>
+</div>
+<div class="metric"><div class="metric-label">Месяц максимального разрыва</div><div class="metric-value" id="gapMonth">—</div></div>
+<div class="metric"><div class="metric-label">Минимальный остаток</div><div class="metric-value" id="minBalance">—</div></div>
+</section>
+
+<div class="status" id="status">💡 <b>Смысл расчёта:</b> смотрим не только на прибыль проекта, но и на то, сколько собственных денег понадобится по дороге до оплаты заказчика.</div>
+
+<section class="chart">
+<div class="chart-title">Как меняется остаток денег</div>
+<div class="chart-wrap"><svg id="chart" viewBox="0 0 680 190" role="img" aria-label="График остатка денег по месяцам"></svg></div>
+</section>
+</main>
+
+<script>
+(function(){
+const rows=document.getElementById("rows"),startEl=document.getElementById("start"),monthsEl=document.getElementById("months");
+const gapEl=document.getElementById("gap"),gapText=document.getElementById("gapText"),gapMonthEl=document.getElementById("gapMonth"),minBalEl=document.getElementById("minBalance"),statusEl=document.getElementById("status"),errorEl=document.getElementById("error"),chart=document.getElementById("chart");
+const fmt=new Intl.NumberFormat("ru-RU",{minimumFractionDigits:0,maximumFractionDigits:2});
+const num=v=>Number(String(v).replace(",",".").replace(/\s/g,""));
+function buildRows(){
+ let m=Math.round(num(monthsEl.value)); if(!Number.isFinite(m)||m<1)m=1;if(m>12)m=12;
+ rows.innerHTML="";
+ for(let i=1;i<=m;i++){
+  const d=document.createElement("div");d.className="month";
+  d.innerHTML='<div class="month-name">Месяц '+i+'</div>'+
+  '<div class="cell"><div class="mini-label">📤 Заплатим</div><span class="icon">−</span><div class="input"><input class="out" inputmode="decimal" value="0" aria-label="Заплатим, месяц '+i+'"><div class="unit">млн ₽</div></div></div>'+
+  '<div class="cell"><div class="mini-label">📥 Получим</div><span class="icon">+</span><div class="input"><input class="in" inputmode="decimal" value="0" aria-label="Получим, месяц '+i+'"><div class="unit">млн ₽</div></div></div>';
+  rows.appendChild(d);
+ }
+}
+function draw(values){
+ const W=680,H=190,L=36,R=12,T=12,B=30,min=Math.min(0,...values),max=Math.max(0,...values),span=(max-min)||1;
+ const x=i=>L+(W-L-R)*(values.length===1?.5:i/(values.length-1)),y=v=>T+(H-T-B)*(max-v)/span,ns="http://www.w3.org/2000/svg";chart.innerHTML="";
+ const z=document.createElementNS(ns,"line");z.setAttribute("x1",L);z.setAttribute("x2",W-R);z.setAttribute("y1",y(0));z.setAttribute("y2",y(0));z.setAttribute("class","zero");chart.appendChild(z);
+ let path="";values.forEach((v,i)=>path+=(i?" L ":"M ")+x(i)+" "+y(v));const p=document.createElementNS(ns,"path");p.setAttribute("d",path);p.setAttribute("class","line");chart.appendChild(p);
+ values.forEach((v,i)=>{const c=document.createElementNS(ns,"circle");c.setAttribute("cx",x(i));c.setAttribute("cy",y(v));c.setAttribute("r","4");c.setAttribute("class","dotp");chart.appendChild(c);const t=document.createElementNS(ns,"text");t.setAttribute("x",x(i));t.setAttribute("y",H-8);t.setAttribute("text-anchor","middle");t.setAttribute("class","chart-label");t.textContent="М"+(i+1);chart.appendChild(t)});
+}
+function calc(){
+ errorEl.textContent="";const start=num(startEl.value),months=Math.round(num(monthsEl.value));
+ if(!Number.isFinite(start)||start<0||!Number.isFinite(months)||months<1||months>12){errorEl.textContent="Укажите свои деньги от 0 млн ₽ и срок от 1 до 12 месяцев.";return}
+ const outs=[...rows.querySelectorAll(".out")],ins=[...rows.querySelectorAll(".in")];let bal=start,minBal=start,minMonth=0,values=[bal];
+ for(let i=0;i<months;i++){const o=num(outs[i].value),inc=num(ins[i].value);if(!Number.isFinite(o)||o<0||!Number.isFinite(inc)||inc<0){errorEl.textContent="Платежи и поступления должны быть неотрицательными числами.";return}bal+=inc-o;values.push(bal);if(bal<minBal){minBal=bal;minMonth=i+1}}
+ const gap=Math.max(0,-minBal);gapEl.textContent=fmt.format(gap)+" млн ₽";gapMonthEl.textContent=gap>0?"М"+minMonth:"—";minBalEl.textContent=fmt.format(minBal)+" млн ₽";
+ if(gap>0){gapText.textContent="Собственных денег не хватает. Это ориентир на максимальную дополнительную сумму, необходимую для прохождения разрыва.";statusEl.innerHTML="🔴 <b>Деньги заканчиваются раньше, чем приходят поступления.</b> Проект может быть прибыльным, но на текущем графике понадобится дополнительный ресурс."}
+ else{gapText.textContent="При заданном графике собственных денег достаточно, чтобы пройти проект без кассового разрыва.";statusEl.innerHTML="🟢 <b>Кассового разрыва не видно.</b> При заданном графике проект проходит в пределах имеющегося ресурса."}
+ draw(values);
+}
+monthsEl.addEventListener("input",buildRows);document.getElementById("calc").addEventListener("click",calc);buildRows();calc();
+})();
+</script>
+</body>
+</html>
